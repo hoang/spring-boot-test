@@ -1,0 +1,1 @@
+alter table tbl_activity add column updated_at TIMESTAMPTZ DEFAULT NOW();

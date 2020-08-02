@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
+
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import com.tranvuhoang.demo.service.TeamService;
 import javassist.NotFoundException;
 
 @SpringBootTest
-@TestInstance(Lifecycle.PER_CLASS)
 class TeamServiceTest {
 	
 	@Autowired
@@ -41,14 +39,17 @@ class TeamServiceTest {
 	private final String idStr = "f147f610-69fc-4881-8d8f-62ce22eb9a64";
 	private final String idStrNotFound = "f147f610-69fc-4881-8d8f-62ce22eb9a68";
 	
-	@BeforeAll
+	@BeforeEach
 	void setUp() {
 		Team team = new Team("venus", "bpm team", new ArrayList<>());
-		Mockito.when(repository.findById(UUID.fromString(idStr))).
-			thenReturn(Optional.of(team));
+		Mockito.when(repository.findById(UUID.fromString(idStr)))
+			.thenReturn(Optional.of(team));
 		
 		Mockito.when(repository.findById(UUID.fromString(idStrNotFound)))
 			.thenReturn(Optional.empty());
+
+		Mockito.when(repository.saveAndFlush(Mockito.any(Team.class)))
+			.thenReturn(team);
 	}
 
 	@Test
@@ -64,6 +65,12 @@ class TeamServiceTest {
 			assertEquals(e.getClass(), NotFoundException.class);
 		}
 		assertTrue(hasException);
+	}
+
+	@Test
+	void testCreate() {
+		Team team = teamService.create(new Team());
+		assertEquals(team.getName(), "venus");
 	}
 
 }

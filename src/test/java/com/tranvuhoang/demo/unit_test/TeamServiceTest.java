@@ -67,6 +67,9 @@ class TeamServiceTest {
 		assertTrue(hasException);
 	}
 
+	/*
+	**	test creation ability of TeamService
+	*/
 	@Test
 	void testCreate() {
 		Team team = teamService.create(new Team());

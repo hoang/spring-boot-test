@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tranvuhoang.demo.database.entity.lazy.Team;
 import com.tranvuhoang.demo.dto.TeamDetailDto;
+import com.tranvuhoang.demo.dto.TeamDto;
 import com.tranvuhoang.demo.service.TeamService;
 
 import javassist.NotFoundException;
@@ -25,7 +26,7 @@ public class TeamController {
 	private TeamService teamService;
 	
 	@GetMapping("")
-	public List<Team> getAll() {
+	public List<TeamDto> getAll() {
 		return teamService.findAll();
 	}
 	

@@ -14,6 +14,7 @@ import com.tranvuhoang.demo.database.entity.lazy.Team;
 import com.tranvuhoang.demo.database.entity.lazy.User;
 import com.tranvuhoang.demo.database.repository.TeamRepository;
 import com.tranvuhoang.demo.dto.TeamDetailDto;
+import com.tranvuhoang.demo.dto.TeamDto;
 import com.tranvuhoang.demo.dto.UserDto;
 import com.tranvuhoang.demo.log.InjectLogger;
 
@@ -31,8 +32,13 @@ public class TeamService {
 		return repository.saveAndFlush(team);
 	}
 	
-	public List<Team> findAll() {
-		return repository.findAll();
+	public List<TeamDto> findAll() {
+		List<Team> teams = repository.findAll();
+		ArrayList<TeamDto> dtos = new ArrayList<TeamDto>();
+		for (Team team: teams) {
+			dtos.add(team.toDto());
+		}
+		return dtos;
 	}
 	
 	@Transactional
